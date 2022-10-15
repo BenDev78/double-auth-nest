@@ -1,7 +1,8 @@
-import { Controller, Get, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
-import { AuthGuard } from "@nestjs/passport";
-import { Request } from "express";
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { CurrentUser } from './auth/decorator/current-user.decorator';
 
 @Controller()
 export class AppController {
@@ -9,7 +10,7 @@ export class AppController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  home(@Req() _req: Request) {
-    return 'hello world';
+  home(@Req() _req: Request, @CurrentUser() user: any) {
+    console.log(user);
   }
 }

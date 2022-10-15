@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { User } from "./user/user.entity";
+import { User } from './user/user.entity';
 
 @Module({
   imports: [
@@ -13,13 +13,13 @@ import { User } from "./user/user.entity";
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root',
+      password: '',
       database: 'double_auth_nest',
       entities: [User],
-      synchronize: true
+      synchronize: true,
     }),
     UserModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
