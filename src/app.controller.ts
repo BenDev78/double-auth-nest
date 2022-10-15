@@ -11,6 +11,6 @@ export class AppController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   home(@Req() _req: Request, @CurrentUser() user: any) {
-    console.log(user);
+    return user;
   }
 }

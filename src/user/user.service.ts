@@ -15,7 +15,7 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  findone(params: FindOneOptions<User> = {}) {
+  findOne(params: FindOneOptions<User> = {}) {
     return this.userRepository.findOne(params);
   }
 

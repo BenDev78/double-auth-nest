@@ -2,7 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { SESSION_ID } from '../../common/constants';
 
-export type JwtPayload = { sub: number; username: string; provider: string };
+export type JwtPayload = { sub: string; username: string; provider: string };
 
 export class JwtAuthStrategy extends PassportStrategy(Strategy) {
   constructor() {
