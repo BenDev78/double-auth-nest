@@ -9,7 +9,7 @@ export class AppService {
 
     return {
       message: 'User information from google',
-      user: req.user
-    }
+      user: req.user,
+    };
   }
 }

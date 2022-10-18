@@ -1,0 +1,11 @@
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "+33772075846",
+    "password": "Azerty2022"
+}
+
+###
+
+GET http://localhost:3000/

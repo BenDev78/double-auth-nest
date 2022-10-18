@@ -1,43 +1,48 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor, UnauthorizedException } from "@nestjs/common";
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { UserService } from '../../user/user.service';
 import { SESSION_ID } from '../../common/constants';
 import jwt_decode from 'jwt-decode';
-import { JwtPayload } from "../jwt/jwt-auth.strategy";
+import { JwtPayload } from '../jwt/jwt-auth.strategy';
+import { DriverService } from '../../driver/driver.service';
 
 @Injectable()
 export class CurrentUserInterceptor implements NestInterceptor {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly driverService: DriverService,
+  ) {}
 
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>,
+    next: CallHandler,
   ): Observable<any> | Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
     const token = request.cookies[SESSION_ID];
 
     if (!token) {
-      return null;
+      return next.handle();
     }
+
     const decoded: JwtPayload = jwt_decode(token);
 
-    let user = null;
-
-    const getUser = async ({sub}) => {
-      return await this.userService.findOne({where: {providerId: sub}})
-    }
-
-    switch (decoded.provider) {
-      case 'google': {
-        user = getUser(decoded)
-
-        break;
+    const getUser = async ({ provider, sub }) => {
+      if ('google' === provider) {
+        return await this.userService.findOne({ where: { providerId: sub } });
       }
-      default:
-        return user;
-    }
 
-    request.currentUser = user;
+      if ('app' === provider) {
+        return await this.driverService.findOne({ where: { providerId: sub } });
+      }
+    };
+
+    request.currentUser = getUser(decoded);
 
     return next.handle();
   }

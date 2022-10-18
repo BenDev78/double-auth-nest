@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { User } from './user/user.entity';
+import { DriverModule } from './driver/driver.module';
+import { Driver } from './driver/driver.entity';
 
 @Module({
   imports: [
@@ -15,11 +17,12 @@ import { User } from './user/user.entity';
       username: 'root',
       password: 'root',
       database: 'double_auth_nest',
-      entities: [User],
+      entities: [User, Driver],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
+    DriverModule,
   ],
   controllers: [AppController],
   providers: [AppService],
