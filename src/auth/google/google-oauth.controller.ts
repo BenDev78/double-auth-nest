@@ -2,7 +2,7 @@ import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthService } from '../jwt/jwt-auth.service';
-import { User } from '../../user/user.entity';
+import { User } from '../../entities/user.entity';
 import { SESSION_ID } from '../../common/constants';
 
 @Controller('google')

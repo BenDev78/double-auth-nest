@@ -1,23 +1,28 @@
 import {
   BadRequestException,
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   NotFoundException,
   Post,
   Res,
+  SerializeOptions,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthService } from './jwt/jwt-auth.service';
 import { CreateDriverDto } from '../driver/dto/create-driver.dto';
 import { Response } from 'express';
-import { Driver } from '../driver/driver.entity';
+import { Driver } from '../entities/driver.entity';
 import { CurrentUser } from './decorator/current-user.decorator';
-import { User } from '../user/user.entity';
+import { User } from '../entities/user.entity';
 import { DriverService } from '../driver/driver.service';
 import { SESSION_ID } from '../common/constants';
 import { AuthGuard } from '@nestjs/passport';
 import * as bcrypt from 'bcrypt';
+import { Serialize } from '../common/interceptor/serialize.interceptor';
+import { DRIVER_ITEM, DriverDto } from '../driver/dto/driver.dto';
 
 @Controller('/auth')
 export class AuthController {
@@ -27,8 +32,15 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  async register(@Body() _body: CreateDriverDto, @Res() _res: Response) {
-    const driver = await this.driverService.create(_body);
+  // @SerializeOptions({
+  //   groups: [DRIVER_ITEM],
+  // })
+  @UseInterceptors(ClassSerializerInterceptor)
+  async register(
+    @Body() _body: CreateDriverDto,
+    @Res({ passthrough: true }) _res: Response,
+  ): Promise<Driver> {
+    const driver: Driver = await this.driverService.create(_body);
 
     const { accessToken } = this.jwtAuthService.login(driver);
 
@@ -37,7 +49,7 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    return _res.send(`driver ${driver.username} has been registered !`);
+    return driver;
   }
 
   @Post('login')

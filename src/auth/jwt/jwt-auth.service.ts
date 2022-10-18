@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../user/user.entity';
+import { User } from '../../entities/user.entity';
 import { JwtPayload } from './jwt-auth.strategy';
-import { Driver } from '../../driver/driver.entity';
+import { Driver } from '../../entities/driver.entity';
 import jwt_decode from 'jwt-decode';
 import { UserService } from '../../user/user.service';
 import { DriverService } from '../../driver/driver.service';

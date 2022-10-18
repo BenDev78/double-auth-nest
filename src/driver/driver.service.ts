@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Driver } from './driver.entity';
+import { Driver } from '../entities/driver.entity';
 import { FindOneOptions, Repository } from 'typeorm';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import * as bcrypt from 'bcrypt';

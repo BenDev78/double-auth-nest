@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Provider } from '../common/constants';
+import { Expose } from 'class-transformer';
 
 @Entity()
 export class Driver {

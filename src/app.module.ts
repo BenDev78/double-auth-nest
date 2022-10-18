@@ -4,12 +4,14 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { User } from './user/user.entity';
 import { DriverModule } from './driver/driver.module';
-import { Driver } from './driver/driver.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './common/guard/roles.guard';
 import { JwtAuthModule } from './auth/jwt/jwt-auth.module';
+import { AdminModule } from './admin/admin.module';
+import { Driver } from './entities/driver.entity';
+import { User } from './entities/user.entity';
+import { Campaign } from './entities/campaign.entity';
 
 @Module({
   imports: [
@@ -20,13 +22,14 @@ import { JwtAuthModule } from './auth/jwt/jwt-auth.module';
       username: 'root',
       password: '',
       database: 'double_auth_nest',
-      entities: [User, Driver],
+      entities: [User, Driver, Campaign],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
     DriverModule,
     JwtAuthModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: RolesGuard }],

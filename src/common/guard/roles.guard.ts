@@ -24,7 +24,13 @@ export class RolesGuard implements CanActivate {
     if ('undefined' === typeof requiredRoles || !requiredRoles.length) {
       return true;
     }
+
     const request = context.switchToHttp().getRequest();
+    const token = request.cookies[SESSION_ID];
+
+    if (!token) {
+      return false;
+    }
 
     return this.jwtAuthService
       .getUser(request.cookies[SESSION_ID])
