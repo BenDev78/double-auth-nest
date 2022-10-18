@@ -31,6 +31,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy) {
         name: name.givenName + name.familyName,
         provider: 'google',
         providerId: id,
+        roles: ['ROLE_ADMIN'],
       });
     }
 

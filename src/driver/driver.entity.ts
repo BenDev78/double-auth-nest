@@ -17,4 +17,7 @@ export class Driver {
 
   @Column()
   password: string;
+
+  @Column({ type: 'json' })
+  roles: string[];
 }

@@ -3,4 +3,5 @@ export class CreateUserDto {
   providerId: string;
   username: string;
   name: string;
+  roles: string[];
 }
