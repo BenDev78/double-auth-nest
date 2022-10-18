@@ -29,6 +29,7 @@ export class DriverService {
       provider: 'app',
       providerId: uuidv4(),
       password: hash,
+      roles: ['ROLE_USER'],
     });
   }
 

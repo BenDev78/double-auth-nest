@@ -37,7 +37,7 @@ export class AuthController {
       sameSite: 'lax',
     });
 
-    return _res.redirect('/auth/me');
+    return _res.send(`driver ${driver.username} has been registered !`);
   }
 
   @Post('login')

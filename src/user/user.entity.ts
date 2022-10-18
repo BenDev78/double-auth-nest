@@ -17,4 +17,7 @@ export class User {
 
   @Column()
   providerId: string;
+
+  @Column({ type: 'json' })
+  roles: string[];
 }

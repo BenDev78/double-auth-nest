@@ -7,6 +7,9 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './user/user.entity';
 import { DriverModule } from './driver/driver.module';
 import { Driver } from './driver/driver.entity';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './common/guard/roles.guard';
+import { JwtAuthModule } from './auth/jwt/jwt-auth.module';
 
 @Module({
   imports: [
@@ -15,7 +18,7 @@ import { Driver } from './driver/driver.entity';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root',
+      password: '',
       database: 'double_auth_nest',
       entities: [User, Driver],
       synchronize: true,
@@ -23,8 +26,9 @@ import { Driver } from './driver/driver.entity';
     UserModule,
     AuthModule,
     DriverModule,
+    JwtAuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: RolesGuard }],
 })
 export class AppModule {}
