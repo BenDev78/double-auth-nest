@@ -35,6 +35,6 @@ export class DriverService {
   }
 
   findOne(params: FindOneOptions<Driver> = {}) {
-    return this.driverRepository.findOne(params);
+    return Driver.findOne(params);
   }
 }
