@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { DriverModule } from './driver/driver.module';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RolesGuard } from './common/guard/roles.guard';
 import { JwtAuthModule } from './auth/jwt/jwt-auth.module';
 import { AdminModule } from './admin/admin.module';
@@ -20,7 +20,7 @@ import { Campaign } from './entities/campaign.entity';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '',
+      password: 'root',
       database: 'double_auth_nest',
       entities: [User, Driver, Campaign],
       synchronize: true,
@@ -32,6 +32,13 @@ import { Campaign } from './entities/campaign.entity';
     AdminModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: RolesGuard }],
+  providers: [
+    AppService,
+    { provide: APP_GUARD, useClass: RolesGuard },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}

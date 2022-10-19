@@ -23,14 +23,15 @@ export class DriverService {
 
     const salt = await bcrypt.genSalt(12);
     const hash = await bcrypt.hash(body.password, salt);
-
-    return this.driverRepository.save({
+    const newDriver = Driver.create({
       username: body.username,
       provider: 'app',
       providerId: uuidv4(),
       password: hash,
       roles: ['ROLE_USER'],
     });
+
+    return newDriver.save({ reload: true });
   }
 
   findOne(params: FindOneOptions<Driver> = {}) {
