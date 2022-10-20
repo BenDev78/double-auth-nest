@@ -5,6 +5,7 @@ import { JwtAuthModule } from './jwt/jwt-auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { DriverModule } from '../driver/driver.module';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
@@ -15,5 +16,6 @@ import { DriverModule } from '../driver/driver.module';
     DriverModule,
   ],
   controllers: [AuthController],
+  providers: [AuthService],
 })
 export class AuthModule {}

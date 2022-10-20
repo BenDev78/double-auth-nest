@@ -1,9 +1,7 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
-  NotFoundException,
   Post,
   Res,
   SerializeOptions,
@@ -15,14 +13,15 @@ import { Response } from 'express';
 import { Driver, ADMIN_DRIVER_ITEM } from '../entities/driver.entity';
 import { CurrentUser } from './decorator/current-user.decorator';
 import { User } from '../entities/user.entity';
-import { DriverService } from '../driver/driver.service';
 import { SESSION_ID } from '../common/constants';
 import { AuthGuard } from '@nestjs/passport';
-import * as bcrypt from 'bcrypt';
+import { AuthService } from './auth.service';
+import { DriverService } from '../driver/driver.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
+    private readonly authService: AuthService,
     private readonly driverService: DriverService,
     private readonly jwtAuthService: JwtAuthService,
   ) {}
@@ -46,21 +45,8 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() _body: Partial<CreateDriverDto>, @Res() _res: Response) {
-    const { password, username } = _body;
-    const driver = await this.driverService.findOne({
-      where: { username },
-    });
-
-    if (!driver)
-      throw new NotFoundException(
-        `User not found with this username ${username}`,
-      );
-
-    const isPasswordValid = await bcrypt.compare(password, driver.password);
-
-    if (!isPasswordValid) throw new BadRequestException('Password invalid');
-
+  async login(@Body() _body: CreateDriverDto, @Res() _res: Response) {
+    const driver = await this.authService.login(_body);
     const { accessToken } = this.jwtAuthService.login(driver);
 
     _res.cookie(SESSION_ID, accessToken, {
