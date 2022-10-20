@@ -6,7 +6,6 @@ import {
   NotFoundException,
   Post,
   Res,
-  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthService } from './jwt/jwt-auth.service';
@@ -15,22 +14,18 @@ import { Response } from 'express';
 import { Driver } from '../entities/driver.entity';
 import { CurrentUser } from './decorator/current-user.decorator';
 import { User } from '../entities/user.entity';
-import { DriverService } from '../driver/driver.service';
 import { SESSION_ID } from '../common/constants';
 import { AuthGuard } from '@nestjs/passport';
 import * as bcrypt from 'bcrypt';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly driverService: DriverService,
-    private readonly jwtAuthService: JwtAuthService,
-  ) {}
+  constructor(private readonly jwtAuthService: JwtAuthService) {}
 
   @Post('login')
   async login(@Body() _body: Partial<CreateDriverDto>, @Res() _res: Response) {
     const { password, username } = _body;
-    const driver = await this.driverService.findOne({
+    const driver = await Driver.findOne({
       where: { username },
     });
 
