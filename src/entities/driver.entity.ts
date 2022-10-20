@@ -1,9 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Provider } from '../common/constants';
 import { Exclude, Expose } from 'class-transformer';
-
-export const DRIVER_ITEM = 'driver_item';
-export const ADMIN_DRIVER_ITEM = 'driver_item';
+import { ADMIN_DRIVER_ITEM, DRIVER_ITEM } from '../common/groups/driver.groups';
 
 @Entity()
 export class Driver extends BaseEntity {

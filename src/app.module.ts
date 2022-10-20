@@ -20,7 +20,7 @@ import { Campaign } from './entities/campaign.entity';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'root',
+      password: '',
       database: 'double_auth_nest',
       entities: [User, Driver, Campaign],
       synchronize: true,

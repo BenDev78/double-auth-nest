@@ -12,7 +12,7 @@ import {
 import { JwtAuthService } from './jwt/jwt-auth.service';
 import { CreateDriverDto } from '../driver/dto/create-driver.dto';
 import { Response } from 'express';
-import { Driver, ADMIN_DRIVER_ITEM } from '../entities/driver.entity';
+import { Driver } from '../entities/driver.entity';
 import { CurrentUser } from './decorator/current-user.decorator';
 import { User } from '../entities/user.entity';
 import { DriverService } from '../driver/driver.service';
@@ -26,24 +26,6 @@ export class AuthController {
     private readonly driverService: DriverService,
     private readonly jwtAuthService: JwtAuthService,
   ) {}
-
-  @Post('register')
-  @SerializeOptions({ groups: [ADMIN_DRIVER_ITEM] })
-  async register(
-    @Body() _body: CreateDriverDto,
-    @Res({ passthrough: true }) _res: Response,
-  ): Promise<Driver> {
-    const driver = await this.driverService.create(_body);
-
-    const { accessToken } = this.jwtAuthService.login(driver);
-
-    _res.cookie(SESSION_ID, accessToken, {
-      httpOnly: true,
-      sameSite: 'lax',
-    });
-
-    return driver;
-  }
 
   @Post('login')
   async login(@Body() _body: Partial<CreateDriverDto>, @Res() _res: Response) {
