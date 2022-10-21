@@ -19,31 +19,18 @@ import { DriverService } from '../driver/driver.service';
 import { SESSION_ID } from '../common/constants';
 import { AuthGuard } from '@nestjs/passport';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly driverService: DriverService,
-    private readonly jwtAuthService: JwtAuthService,
+    private readonly authService: AuthService,
   ) {}
 
   @Post('login')
-  async login(@Body() _body: Partial<CreateDriverDto>, @Res() _res: Response) {
-    const { password, username } = _body;
-    const driver = await this.driverService.findOne({
-      where: { username },
-    });
-
-    if (!driver)
-      throw new NotFoundException(
-        `User not found with this username ${username}`,
-      );
-
-    const isPasswordValid = await bcrypt.compare(password, driver.password);
-
-    if (!isPasswordValid) throw new BadRequestException('Password invalid');
-
-    const { accessToken } = this.jwtAuthService.login(driver);
+  async login(@Body() _body: CreateDriverDto, @Res() _res: Response) {
+    const { accessToken } = await this.authService.login(_body);
 
     _res.cookie(SESSION_ID, accessToken, {
       httpOnly: true,
