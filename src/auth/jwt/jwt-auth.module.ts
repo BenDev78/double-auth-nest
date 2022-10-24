@@ -14,7 +14,7 @@ import { DriverModule } from '../../driver/driver.module';
         return {
           secret: 'secret',
           signOptions: {
-            expiresIn: '15s',
+            expiresIn: '3600',
           },
         };
       },

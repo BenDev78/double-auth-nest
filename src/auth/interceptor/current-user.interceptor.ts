@@ -5,8 +5,8 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { SESSION_ID } from '../../common/constants';
 import { JwtAuthService } from '../jwt/jwt-auth.service';
+import { extractJwtFromHeaders } from '../../utils/jwt';
 
 @Injectable()
 export class CurrentUserInterceptor implements NestInterceptor {
@@ -17,7 +17,7 @@ export class CurrentUserInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Observable<any> | Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
-    const token = request.cookies[SESSION_ID];
+    const token = extractJwtFromHeaders(request);
 
     if (!token) {
       return next.handle();

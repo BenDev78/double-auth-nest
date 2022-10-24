@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { Role } from '../roles.enum';
 import { ROLES_KEY } from '../decorator/role.decorator';
 import { JwtAuthService } from '../../auth/jwt/jwt-auth.service';
-import { SESSION_ID } from '../constants';
+import { extractJwtFromHeaders } from '../../utils/jwt';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -26,16 +26,14 @@ export class RolesGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = request.cookies[SESSION_ID];
+    const token = extractJwtFromHeaders(request);
 
     if (!token) {
       return false;
     }
 
-    return this.jwtAuthService
-      .getUser(request.cookies[SESSION_ID])
-      .then((res) => {
-        return requiredRoles.some((role) => res?.roles?.includes(role));
-      });
+    return this.jwtAuthService.getUser(token).then((res) => {
+      return requiredRoles.some((role) => res?.roles?.includes(role));
+    });
   }
 }
