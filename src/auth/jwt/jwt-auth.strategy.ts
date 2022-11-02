@@ -1,23 +1,12 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-jwt';
-import { SESSION_ID } from '../../common/constants';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
 export type JwtPayload = { sub: string; username: string; provider: string };
 
 export class JwtAuthStrategy extends PassportStrategy(Strategy) {
   constructor() {
-    const extractJwtFromCookie = (req) => {
-      let token = null;
-
-      if (req && req.cookies) {
-        token = req.cookies[SESSION_ID];
-      }
-
-      return token;
-    };
-
     super({
-      jwtFromRequest: extractJwtFromCookie,
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: 'secret',
     });

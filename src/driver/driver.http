@@ -8,4 +8,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/admin/campaign
+GET http://localhost:3000/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IiszMzc3MjA3NTg0NiIsInN1YiI6ImNhNjk5NTc3LTMwZDItNGVlZS1hMzVmLWVmMjQwZTA0NWM0ZCIsInByb3ZpZGVyIjoiYXBwIiwiaWF0IjoxNjY2NjIxMTgxfQ.ajI8HX9JdHDBp_rDioHCfWxrS7_b3gTX89ghWlR81SI
+

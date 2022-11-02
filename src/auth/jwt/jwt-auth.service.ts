@@ -17,7 +17,7 @@ export class JwtAuthService {
     };
 
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload, { secret: 'secret' }),
     };
   }
 
