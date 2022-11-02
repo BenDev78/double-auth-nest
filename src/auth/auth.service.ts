@@ -4,13 +4,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateDriverDto } from '../driver/dto/create-driver.dto';
-import { DriverService } from '../driver/driver.service';
 import * as bcrypt from 'bcrypt';
 import { Driver } from '../entities/driver.entity';
+import { JwtAuthService } from './jwt/jwt-auth.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly driverService: DriverService) {}
+  constructor(private readonly jwtAuthService: JwtAuthService) {}
 
   async login(_body: CreateDriverDto) {
     const { password, username } = _body;
@@ -27,6 +27,6 @@ export class AuthService {
 
     if (!isPasswordValid) throw new BadRequestException('Password invalid');
 
-    return driver;
+    return this.jwtAuthService.login(driver);
   }
 }
